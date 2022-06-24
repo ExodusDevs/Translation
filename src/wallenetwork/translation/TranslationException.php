@@ -1,6 +1,6 @@
 <?php
 
-namespace isrdxv\practice\translation;
+namespace wallenetwork\translation;
 
 use Exception;
 
