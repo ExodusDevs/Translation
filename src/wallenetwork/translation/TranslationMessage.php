@@ -1,8 +1,8 @@
 <?php
 
-namespace isrdxv\practice\translation;
+namespace wallenetwork\translation;
 
-use isrdxv\practice\translation\TranslationException;
+use wallenetwork\translation\TranslationException;
 
 final class TranslationMessage
 {
@@ -31,7 +31,7 @@ final class TranslationMessage
   }
   
   /** 
-   * @return String[]
+   * @return mixed[]
    */
   public function getParameters(): array
   {
