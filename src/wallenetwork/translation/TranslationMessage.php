@@ -11,18 +11,16 @@ final class TranslationMessage
   /** @var Array **/
   private $params = [];
   
-  public function __construct(string $text = "", array $params = [])
+  public function __construct(string $text = "", array $params = null)
   {
     if (empty($text)) {
       throw new TranslationException("$text variable is null or empty string");
     }
-    if (empty($params)) {
-      throw new TranslationException("The variable $params is an empty array or is null");
+    if ($params === []) {
+      throw new TranslationException("The variable $params is an empty array");
     }
     $this->text = $text;
-    foreach($this->params as $key => $value) {
-      $this->params[$key] = $value;
-    }
+    $this->params = $params ?? [];
   }
   
   public function getText(): string

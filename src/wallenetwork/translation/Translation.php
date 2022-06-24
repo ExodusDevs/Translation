@@ -87,9 +87,7 @@ class Translation
     if ($this->existsLanguage($language)) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
     }
-    if ($language === null || $language === "") {
-      $language = $this->defaultLanguage;
-    }
+    $language = (isset(self::MINECRAFT_LANGUAGES[$language]) ? self::MINECRAFT_LANGUAGES[$language] : $this->defaultLanguage);
     if (!is_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini")) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] sorry, there is no file with that language, this message is for you to add the file of this language");
     }
