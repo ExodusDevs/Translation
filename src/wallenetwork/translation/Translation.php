@@ -64,8 +64,8 @@ class Translation
   
   public function setDefaultLanguage(string $defaultLanguage): void
   {
-    if (empty($defaultLanguage)) {
-      //Exception
+    if ($this->existsLanguage($defaultLanguage) || empty($defaultLanguage)) {
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the default language does not exist in the game languages or is empty");
     }
     $this->defaultLanguage = $defaultLanguage;
   }
@@ -86,19 +86,19 @@ class Translation
       throw new TranslationException("[" . $thid->plugin->getName() . ": TranslationAPI] the message cannot be empty");
     }
     if ($this->existsLanguage($language)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] The language you have written does not exist in the language of the game")
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game")
     }
     if ($language === null || $language === "") {
       $language = $this->defaultLanguage;
     }
     if (!is_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini")) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] Sorry, there is no file with that language, this message is for you to add the file of this language");
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] sorry, there is no file with that language, this message is for you to add the file of this language");
     }
     $messages = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini");
-    if (empty($messages[$message])) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] The message i add does not exist in the language folders")
-    }
     $message = $messages[$message];
+    if (empty($message)) {
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message i add does not exist in the language folders")
+    }
     return is_array($parameters) ? str_replace(array_merge([], array_keys($parameters)), array_merge([], array_values($parameters), $message)) : $message;
   }
   
