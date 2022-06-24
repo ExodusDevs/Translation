@@ -4,7 +4,6 @@ namespace wallenetwork\translation;
 
 use wallenetwork\TranslationException;
 
-use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase;
 
 class Translation
@@ -83,7 +82,7 @@ class Translation
   public function send(string $language, string $message, array $parameters = null): string
   {
     if (empty($message)) {
-      throw new TranslationException("[" . $thid->plugin->getName() . ": TranslationAPI] the message cannot be empty");
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message cannot be empty");
     }
     if ($this->existsLanguage($language)) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
@@ -99,7 +98,7 @@ class Translation
     if (empty($message)) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message i add does not exist in the language folders");
     }
-    return is_array($parameters) ? str_replace(array_merge([], array_keys($parameters)), array_merge([], array_values($parameters), $message)) : $message;
+    return is_array($parameters) ? str_replace(array_merge([], array_keys($parameters)), array_merge([], array_values($parameters)), $message) : $message;
   }
   
 }
