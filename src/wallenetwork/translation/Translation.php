@@ -97,7 +97,7 @@ class Translation
     $messages = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini");
     $message = $messages[$message];
     if (empty($message)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message i add does not exist in the language folders")
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message i add does not exist in the language folders");
     }
     return is_array($parameters) ? str_replace(array_merge([], array_keys($parameters)), array_merge([], array_values($parameters), $message)) : $message;
   }
