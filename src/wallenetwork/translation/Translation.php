@@ -86,7 +86,7 @@ class Translation
       throw new TranslationException("[" . $thid->plugin->getName() . ": TranslationAPI] the message cannot be empty");
     }
     if ($this->existsLanguage($language)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game")
+      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
     }
     if ($language === null || $language === "") {
       $language = $this->defaultLanguage;
