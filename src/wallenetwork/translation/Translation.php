@@ -39,11 +39,11 @@ class Translation
     "enws", #None
     "en_US", #United States
     "eo_UY", #Constructed language (international)
-    "es_AR" #Argentina
-    "es_CL" #Chile
+    "es_AR", #Argentina
+    "es_CL", #Chile
     "es_EC", #Ecuador
     "es_ES", #Spain
-    "es_MX", #Mexico
+    "es_MX" #Mexico
   ];
   
   /** @var PluginBase **/
