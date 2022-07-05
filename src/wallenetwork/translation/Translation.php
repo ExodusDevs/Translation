@@ -79,15 +79,15 @@ class Translation
     return in_array($language, self::MINECRAFT_LANGUAGES, true);
   }
   
-  public function send(string $language, string $message, array $parameters = null): string
+  public function send(string $language, string $message, ?array $parameters = null): string
   {
     if (empty($message)) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message cannot be empty");
     }
-    if ($this->existsLanguage($language)) {
+    if (!$this->existsLanguage($language)) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
     }
-    $language = (isset(self::MINECRAFT_LANGUAGES[$language]) ? self::MINECRAFT_LANGUAGES[$language] : $this->defaultLanguage);
+    $language = (isset(self::MINECRAFT_LANGUAGES[$language])) ? self::MINECRAFT_LANGUAGES[$language] : $this->defaultLanguage;
     if (!is_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini")) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] sorry, there is no file with that language, this message is for you to add the file of this language");
     }
