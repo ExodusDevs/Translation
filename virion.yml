@@ -1,6 +1,6 @@
 name: TranslationAPI
 api: 4.0.0
-antigen: wallenetwork\translation
-version: 1.0.6
+antigen: exodus\ranslation
+version: 1.0.0-stable
 authors: [iSrDxv]
 description: Create a multilanguage system with this api in Minecraft Bedrock
