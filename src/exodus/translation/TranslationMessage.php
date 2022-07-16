@@ -1,8 +1,8 @@
 <?php
 
-namespace wallenetwork\translation;
+namespace exodus\translation;
 
-use wallenetwork\translation\TranslationException;
+use exodus\translation\TranslationException;
 
 final class TranslationMessage
 {
