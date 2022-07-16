@@ -1,8 +1,8 @@
 <?php
 
-namespace wallenetwork\translation;
+namespace exodus\translation;
 
-use wallenetwork\TranslationException;
+use exodus\TranslationException;
 
 use pocketmine\plugin\PluginBase;
 
