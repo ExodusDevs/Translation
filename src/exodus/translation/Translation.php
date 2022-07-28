@@ -2,7 +2,7 @@
 
 namespace exodus\translation;
 
-use exodus\TranslationException;
+use exodus\translation\TranslationException;
 
 use pocketmine\plugin\PluginBase;
 
