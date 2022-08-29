@@ -36,7 +36,7 @@ final class TranslationMessage
     return $this->params;
   }
   
-  public function getParameter(string $key): string|null
+  public function getParameter(string $key): ?string
   {
     return $this->params[$key] ?? null;
   }
