@@ -6,3 +6,9 @@ First you initialize the class, then use its methods
 //$this = PluginBase class
 $translation = new Translation($this);
 ```
+First choose the default language to use if that language does not exist
+```php
+//i will use the language of the USA
+$translation->setDefaultLanguage("en_US");
+```
+after this... soon
