@@ -63,7 +63,7 @@ class Translation
   
   public function setDefaultLanguage(string $defaultLanguage): void
   {
-    if ($this->existsLanguage($defaultLanguage) || empty($defaultLanguage)) {
+    if (!$this->existsLanguage($defaultLanguage) || empty($defaultLanguage)) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the default language does not exist in the game languages or is empty");
     }
     $this->defaultLanguage = $defaultLanguage;
