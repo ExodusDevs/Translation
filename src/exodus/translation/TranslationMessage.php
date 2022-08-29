@@ -16,7 +16,7 @@ final class TranslationMessage
     if (empty($text)) {
       throw new TranslationException("$text variable is null or empty string");
     }
-    if ($params === []) {
+    if (empty($params)) {
       throw new TranslationException("The variable $params is an empty array");
     }
     $this->text = $text;
