@@ -29,7 +29,7 @@ final class TranslationMessage
   }
   
   /** 
-   * @return mixed[]
+   * @return string,int,float[]
    */
   public function getParameters(): array
   {
