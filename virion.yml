@@ -1,5 +1,5 @@
 name: TranslationAPI
-api: 4.0.0
+api: [4.0.0, 5.0.0]
 antigen: exodus\translation
 version: 1.0.8
 authors: [iSrDxv]
