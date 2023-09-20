@@ -4,46 +4,46 @@ namespace exodus\translation;
 
 use exodus\translation\TranslationException;
 
+use pocketmine\Server;
+use pocketmine\player\Player;
+use pocketmine\command\CommandSender;
 use pocketmine\plugin\PluginBase;
 
 class Translation
 {
+  public const DEFAULT_LANGUAGE = "en_US";
+  
   public const MINECRAFT_LANGUAGES = [
-    "af_ZA", #Namibia, South Africa
-    "ar_SA", #Arab League (Middle East and North Africa)
-    "ast_ES", #Asturias (Spanish Autonomous Community)
-    "az_AZ", #Azerbaijan, Dagestan, Azerbaijani Iran
-    "ba_RU", #Bashkortostan (Russia)
-    "bar", #Bavaria
-    "be_BY", #Belarus
-    "bg_BG", #Bulgaria
-    "br_FR", #France
-    "brb", #Netherlands
-    "bs_BA", #Bosnia and Herzegovina
-    "ca_es", #Spain (Catalonia) & Andorra
-    "cs_CZ", #Czech Republic
-    "cy_GB", #Wales
-    "da_DK", #Denmark, Faroe Islands
-    "de_AT", #Austria
-    "ge_CH", #Switzerland
-    "de_DE", #Germany, Austria, Switzerland, Liechtenstein, Luxembourg, Belgium
-    "el_GR", #Greece, Cyprus
-    "eng_AU", #Australia
-    "en_CA", #Canada
-    "en_GB", #Great Britain, India, Singapore, Ireland
-    "en_NZ", #New Zealand
-    "en_PT", #The Seven Seas
-    "en_UD", #None
-    "enp", #None
-    "enws", #None
-    "en_US", #United States
-    "eo_UY", #Constructed language (international)
-    "es_AR", #Argentina
-    "es_CL", #Chile
-    "es_EC", #Ecuador
-    "es_ES", #Spain
-    "es_MX" #Mexico
-  ];
+  		"en_US",
+  		"en_GB",
+  		"de_DE",
+  		"es_ES",
+  		"es_MX",
+  		"fr_FR",
+  		"fr_CA",
+  		"it_IT",
+  		"ja_JP",
+  		"ko_KR",
+  		"pt_BR",
+  		"pt_PT",
+  		"ru_RU",
+  		"zh_CN",
+  		"zh_TW",
+  		"nl_NL",
+  		"bg_BG",
+  		"cs_CZ",
+  		"da_DK",
+  		"el_GR",
+  		"fi_FI",
+  		"hu_HU",
+  		"id_ID",
+  		"nb_NO",
+  		"pl_PL",
+  		"sk_SK",
+  		"sv_SE",
+  		"tr_TR",
+  		"uk_UA",
+  	];
   
   /** @var PluginBase **/
   private $plugin;
@@ -63,8 +63,9 @@ class Translation
   
   public function setDefaultLanguage(string $defaultLanguage): void
   {
-    if (!$this->existsLanguage($defaultLanguage) || empty($defaultLanguage)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the default language does not exist in the game languages or is empty");
+    if (!in_array($language, self::MINECRAFT_LANGUAGES, true) || empty($defaultLanguage)) {
+      Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the default language does not exist in the game languages or is empty");
+      return;
     }
     $this->defaultLanguage = $defaultLanguage;
   }
@@ -74,29 +75,32 @@ class Translation
     return $this->defaultLanguage;
   }
   
-  public function existsLanguage(string $language): bool
+  public function send(CommandSender $player, string $key, array $parameters = []): string
   {
-    return in_array($language, self::MINECRAFT_LANGUAGES, true);
-  }
-  
-  public function send(string $language, string $message, ?array $parameters = null): string
-  {
-    if (empty($message)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message cannot be empty");
+    /*if (empty($key)) {
+      Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the message cannot be empty");
+      return "";
+    }*/
+    $language = ($player instanceof Player ? (self::MINECRAFT_LANGUAGES[$player->getLocale()] ?? null) : null) ?? $this->defaultLanguage;
+    if (!in_array($language, self::MINECRAFT_LANGUAGES, true)) {
+      Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
+      return "";
     }
-    if (!$this->existsLanguage($language)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
-    }
-    $language = (isset(self::MINECRAFT_LANGUAGES[$language])) ? self::MINECRAFT_LANGUAGES[$language] : $this->defaultLanguage;
     if (!is_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini")) {
       throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] sorry, there is no file with that language, this message is for you to add the file of this language");
     }
-    $messages = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini");
-    $message = $messages[$message];
-    if (empty($message)) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] the message i add does not exist in the language folders");
+    $file = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini");
+    $translation = $file[$key];
+    if ($translation === null) {
+      $dTranslation = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $this->defaultLanguage . ".ini")[$key];
+      if ($dTranslation === null) {
+        Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] Unknown translation key: " . $key);
+        return "";
+      } else {
+        $translation = $dTranslation;
+      }
     }
-    return is_array($parameters) ? str_replace(array_merge([], array_keys($parameters)), array_merge([], array_values($parameters)), $message) : $message;
+    return str_replace(array_keys($parameters), array_values($parameters), $translation);
   }
   
 }
