@@ -1,9 +1,9 @@
---- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/WalleNetwork/TranslationAPI
+--- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/WalleNetwork/Translation
 #build-by-default: true
 branches:
 - master
 projects:
-  TranslationAPI:
+  Translation:
     path: ""
     model: virion
     type: library
