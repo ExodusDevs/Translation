@@ -75,7 +75,7 @@ class Translation
     return $this->defaultLanguage;
   }
   
-  public function send(CommandSender $player, string $key, array $parameters = []): string
+  public function send(CommandSender|Player $player, string $key, array $parameters = []): string
   {
     /*if (empty($key)) {
       Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the message cannot be empty");
