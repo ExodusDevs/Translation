@@ -8,7 +8,10 @@ $translation = new Translation($this);
 ```
 First choose the default language to use if that language does not exist
 ```php
+//use class
+use exodus\translation\Language;
+
 //i will use the language of the USA
-$translation->setDefaultLanguage("en_US");
+$translation->setDefaultLanguage(new Language("en_US", "English Language", ["welcome-message" => "%username% joined!!"]));
 ```
 after this... soon
