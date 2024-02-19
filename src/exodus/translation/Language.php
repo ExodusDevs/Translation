@@ -5,7 +5,7 @@ namespace exodus\translation;
 
 use InvalidArgumentException;
 
-final class TranslationMessage
+final class Language
 {
   /** @var String $identifier **/
   private string $identifier;
