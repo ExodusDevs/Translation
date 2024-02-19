@@ -43,7 +43,7 @@ class Translation
   		"sv_SE",
   		"tr_TR",
   		"uk_UA",
-  	];
+  ];
   
   /** @var PluginBase **/
   private $plugin;
@@ -97,7 +97,7 @@ class Translation
         Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] Unknown translation key: " . $key);
         return "";
       } else {
-        $translation = $dTranslation;
+        $translation = $dTranslation[$key];
       }
     }
     return str_replace(array_keys($parameters), array_values($parameters), $translation);
