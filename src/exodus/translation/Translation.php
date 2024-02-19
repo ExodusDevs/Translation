@@ -13,8 +13,6 @@ use pocketmine\plugin\PluginBase;
 
 class Translation
 {
-  public const DEFAULT_LANGUAGE = "en_US";
-  
   const MINECRAFT_LANGUAGES = [
 		// See  ->  https://github.com/Mojang/bedrock-samples/blob/main/resource_pack/texts/language_names.json
 		"en_US", // English (United States)
