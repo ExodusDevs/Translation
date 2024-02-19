@@ -2,7 +2,9 @@
 
 namespace exodus\translation;
 
-use exodus\translation\TranslationException;
+use exodus\translation\Language;
+
+use InvalidArgumentException;
 
 use pocketmine\Server;
 use pocketmine\player\Player;
@@ -13,91 +15,109 @@ class Translation
 {
   public const DEFAULT_LANGUAGE = "en_US";
   
-  public const MINECRAFT_LANGUAGES = [
-  		"en_US",
-  		"en_GB",
-  		"de_DE",
-  		"es_ES",
-  		"es_MX",
-  		"fr_FR",
-  		"fr_CA",
-  		"it_IT",
-  		"ja_JP",
-  		"ko_KR",
-  		"pt_BR",
-  		"pt_PT",
-  		"ru_RU",
-  		"zh_CN",
-  		"zh_TW",
-  		"nl_NL",
-  		"bg_BG",
-  		"cs_CZ",
-  		"da_DK",
-  		"el_GR",
-  		"fi_FI",
-  		"hu_HU",
-  		"id_ID",
-  		"nb_NO",
-  		"pl_PL",
-  		"sk_SK",
-  		"sv_SE",
-  		"tr_TR",
-  		"uk_UA",
-  ];
+  const MINECRAFT_LANGUAGES = [
+		// See  ->  https://github.com/Mojang/bedrock-samples/blob/main/resource_pack/texts/language_names.json
+		"en_US", // English (United States)
+		"en_GB", // English (United Kingdom)
+		"de_DE", // Deutsch (Deutschland)
+		"es_ES", // Español (España)
+		"es_MX", // Español (México)
+		"fr_FR", // Français (France)
+		"fr_CA", // Français (Canada)
+		"it_IT", // Italiano (Italia)
+		"ja_JP", // 日本語 (日本)
+		"ko_KR", // 한국어 (대한민국)
+		"pt_BR", // Português (Brasil)
+		"pt_PT", // Português (Portugal)
+		"ru_RU", // Русский (Россия)
+		"zh_CN", // 中文(简体)
+		"zh_TW", // 中文(繁體)
+		"nl_NL", // Nederlands (Nederland)
+		"bg_BG", // Български (България)
+		"cs_CZ", // Čeština (Česko)
+		"da_DK", // Dansk (Danmark)
+		"el_GR", // Ελληνικά (Ελλάδα)
+		"fi_FI", // Suomi (Suomi)
+		"hu_HU", // Magyar (Magyarország)
+		"id_ID", // Indonesia (Indonesia)
+		"nb_NO", // Norsk bokmål (Norge)
+		"pl_PL", // Polski (Polska)
+		"sk_SK", // Slovenčina (Slovensko)
+		"sv_SE", // Svenska (Sverige)
+		"tr_TR", // Türkçe (Türkiye)
+		"uk_UA", // Українська (Україна)
+	];
   
   /** @var PluginBase **/
   private $plugin;
   
-  /** @var String **/
+  /** @var Language **/
   private $defaultLanguage;
   
-  public function __construct(PluginBase $plugin)
+  /** @var Array **/
+  private array $languages = [];
+  
+  function __construct(PluginBase $plugin)
   {
     $this->plugin = $plugin;
   }
   
-  public function getPlugin(): PluginBase
+  function getPlugin(): PluginBase
   {
     return $this->plugin;
   }
   
-  public function setDefaultLanguage(string $defaultLanguage): void
+  function isRegistered(string $language): bool
   {
-    if (!in_array($language, self::MINECRAFT_LANGUAGES, true) || empty($defaultLanguage)) {
-      Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the default language does not exist in the game languages or is empty");
-      return;
+    return isset($this->languages[$language]);
+  }
+  
+  function setLanguage(Language $language, bool $overwrite = false): void
+  {
+    $identifier = $language->getIdentifer();
+    if (!in_array($identifier, self::MINECRAFT_LANGUAGES, true)) {
+      throw new InvalidArgumentException("Language $identifier is not available in the library");
+    }
+    if (!$overwrite) {
+      throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] You cannot overwrite an already added language");
+    }
+    $this->languages[$identifier] = $language;
+  }
+  
+  function getLanguage(string $name): ?Language
+  {
+    return $this->languages[$name] ?? null;
+  }
+  
+  function setDefaultLanguage(Language $languagw): void
+  {
+    if (!in_array($language->getIdentifer(), self::MINECRAFT_LANGUAGES, true) || empty($language)) {
+      throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] the default language does not exist in the game languages or is empty");
     }
     $this->defaultLanguage = $defaultLanguage;
   }
   
-  public function getDefaultLanguage(): string
+  function getDefaultLanguage(): string
   {
     return $this->defaultLanguage;
   }
   
-  public function send(CommandSender|Player $player, string $key, array $parameters = []): string
+  function send(null|CommandSender|Player $player, string $key = "", array $parameters = []): string
   {
-    /*if (empty($key)) {
-      Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the message cannot be empty");
-      return "";
-    }*/
-    $language = ($player instanceof Player ? (self::MINECRAFT_LANGUAGES[$player->getLocale()] ?? null) : null) ?? $this->defaultLanguage;
-    if (!in_array($language, self::MINECRAFT_LANGUAGES, true)) {
-      Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] the language you have written does not exist in the language of the game");
-      return "";
+    if (empty($player)) {
+      throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] The user or console is null");
     }
-    if (!is_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini")) {
-      throw new TranslationException("[" . $this->plugin->getName() . ": TranslationAPI] sorry, there is no file with that language, this message is for you to add the file of this language");
+    $language = ($player instanceof Player ? ($this->getLanguage($player->getLocale()) ?? null) : null) ?? $this->defaultLanguage;
+    if (!in_array($language->getIdentifer(), self::MINECRAFT_LANGUAGES, true)) {
+      throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] the language you have written does not exist in the language of the game");
     }
-    $file = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $language . ".ini");
-    $translation = $file[$key];
+    $translation = $language?->getTranslation($key);
     if ($translation === null) {
-      $dTranslation = parse_ini_file($this->plugin->getDataFolder() . "languages" . DIRECTORY_SEPARATOR . $this->defaultLanguage . ".ini")[$key];
+      $dTranslation = $this->getDefaultLanguage();
       if ($dTranslation === null) {
-        Server::getInstance()->getLogger()->error("[" . $this->plugin->getName() . ": TranslationAPI] Unknown translation key: " . $key);
-        return "";
+        throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] Unknown language");
       } else {
-        $translation = $dTranslation[$key];
+        $translation = $dTranslation->getTranslation($key);
       }
     }
     return str_replace(array_keys($parameters), array_values($parameters), $translation);
