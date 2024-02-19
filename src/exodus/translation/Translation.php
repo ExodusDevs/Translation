@@ -67,9 +67,9 @@ class Translation
     return $this->plugin;
   }
   
-  function isRegistered(string $language): bool
+  function isRegistered(string $name): bool
   {
-    return isset($this->languages[$language]);
+    return isset($this->languages[$name]);
   }
   
   function setLanguage(Language $language, bool $overwrite = false): void
