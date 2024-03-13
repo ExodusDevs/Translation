@@ -7,13 +7,13 @@ use InvalidArgumentException;
 
 final class Language
 {
-  /** @var String $identifier **/
+  /** @var string $identifier **/
   private string $identifier;
   
-  /** @var String $name **/
+  /** @var string $name **/
   private string $name;
   
-  /** @var Array $translations **/
+  /** @var array $translations **/
   private array $translations = [];
   
   public function __construct(string $identifier, string $name = "", ?array $translations = null)
