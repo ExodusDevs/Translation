@@ -14,4 +14,9 @@ use exodus\translation\Language;
 //i will use the language of the USA
 $translation->setDefaultLanguage(new Language("en_US", "English Language", ["welcome-message" => "%username% joined!!"]));
 ```
-after this... soon
+after this...
+```php
+
+
+$translation->send($player, "welcome-message", ["username" => $player->getName()]);
+```
