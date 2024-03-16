@@ -44,7 +44,7 @@ class Translation
 		"sv_SE", // Svenska (Sverige)
 		"tr_TR", // Türkçe (Türkiye)
 		"uk_UA", // Українська (Україна)
-	];
+  ];
   
   /** @var PluginBase **/
   private $plugin;
