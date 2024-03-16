@@ -19,10 +19,10 @@ final class Language
   public function __construct(string $identifier, string $name = "", ?array $translations = null)
   {
     if (empty($identifier)) {
-      throw new TranslationException("$name variable is \"null\" or empty string");
+      throw new InvalidArgumentException("$name variable is \"null\" or empty string");
     }
     if (empty($name)) {
-      throw new TranslationException("The variable $name is an empty");
+      throw new InvalidArgumentException("The variable $name is an empty");
     }
     $this->identifier = $identifier;
     $this->name = $name;
