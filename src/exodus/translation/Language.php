@@ -21,8 +21,8 @@ final class Language
     if (empty($identifier)) {
       throw new TranslationException("$name variable is \"null\" or empty string");
     }
-    if (!isset($name)) {
-      throw new TranslationException("The variable $language is an empty array");
+    if (empty($name)) {
+      throw new TranslationException("The variable $name is an empty");
     }
     $this->identifier = $identifier;
     $this->name = $name;
