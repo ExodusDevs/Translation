@@ -20,3 +20,4 @@ after this...
 
 $translation->send($player, "welcome-message", ["username" => $player->getName()]);
 ```
+this beautiful code xd
