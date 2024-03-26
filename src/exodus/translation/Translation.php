@@ -72,7 +72,7 @@ class Translation
   
   function setLanguage(Language $language, bool $overwrite = false): void
   {
-    $identifier = $language->getIdentifer();
+    $identifier = $language->getIdentifier();
     if (!in_array($identifier, self::MINECRAFT_LANGUAGES, true)) {
       throw new InvalidArgumentException("Language $identifier is not available in the library");
     }
@@ -89,7 +89,7 @@ class Translation
   
   function setDefaultLanguage(?Language $language): void
   {
-    if (!in_array($language->getIdentifer(), self::MINECRAFT_LANGUAGES, true) || empty($language)) {
+    if (!in_array($language->getIdentifier(), self::MINECRAFT_LANGUAGES, true) || empty($language)) {
       throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] the default language does not exist in the game languages or is empty");
     }
     $this->defaultLanguage = $defaultLanguage;
@@ -106,7 +106,7 @@ class Translation
       throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] The user or console is null");
     }
     $language = ($player instanceof Player ? ($this->getLanguage($player->getLocale()) ?? null) : null) ?? $this->defaultLanguage;
-    if (!in_array($language->getIdentifer(), self::MINECRAFT_LANGUAGES, true)) {
+    if (!in_array($language->getIdentifier(), self::MINECRAFT_LANGUAGES, true)) {
       throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] the language you have written does not exist in the language of the game");
     }
     $translation = $language?->getTranslation($key);
