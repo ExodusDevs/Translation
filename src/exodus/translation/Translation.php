@@ -87,7 +87,7 @@ class Translation
     return $this->languages[$name] ?? null;
   }
   
-  function setDefaultLanguage(Language $language): void
+  function setDefaultLanguage(?Language $language): void
   {
     if (!in_array($language->getIdentifer(), self::MINECRAFT_LANGUAGES, true) || empty($language)) {
       throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] the default language does not exist in the game languages or is empty");
