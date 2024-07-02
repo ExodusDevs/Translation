@@ -1,6 +1,6 @@
 name: Translation
 api: [4.0.0, 5.0.0]
 antigen: exodus\translation
-version: 1.3.1
+version: 1.3.2
 authors: [iSrDxv]
 description: Create a multilanguage system with this api in Minecraft Bedrock
