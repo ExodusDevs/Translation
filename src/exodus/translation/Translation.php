@@ -95,7 +95,7 @@ class Translation
     $this->defaultLanguage = $language;
   }
   
-  function getDefaultLanguage(): string
+  function getDefaultLanguage(): Language
   {
     return $this->defaultLanguage;
   }
