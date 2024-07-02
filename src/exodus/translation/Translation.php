@@ -115,7 +115,7 @@ class Translation
       if ($dTranslation === null) {
         throw new InvalidArgumentException("[" . $this->plugin->getName() . ": Translation] Unknown language");
       } else {
-        $translation = $dTranslation->getTranslation($key);
+        $translation = $dTranslation?->getTranslation($key);
       }
     }
     return str_replace(array_keys($parameters), array_values($parameters), $translation);
